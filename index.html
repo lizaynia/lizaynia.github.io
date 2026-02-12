@@ -1,13 +1,149 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>About Me</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Little Hunt For You</title>
+    <style>
+        :root {
+            --bg: #fff5f7;
+            --text: #4a4a4a;
+            --accent: #ff4d6d;
+            --filler: #d1d1d1;
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        h2 { color: var(--text); margin-bottom: 10px; font-weight: 300; }
+        .instructions { font-size: 0.9rem; color: #888; margin-bottom: 20px; }
+
+        /* The Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(7, 40px);
+            grid-gap: 10px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
+            position: relative;
+        }
+
+        /* Hide the actual checkboxes */
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        /* Letter Styling */
+        label, .f {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        /* The Filler Letters */
+        .f { color: var(--filler); cursor: default; }
+
+        /* When a correct letter is clicked */
+        input:checked + label {
+            background-color: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* THE MAGIC LOGIC */
+        /* If all 18 specific letters are checked... */
+        #w:checked ~ #i:checked ~ #l1:checked ~ #l2:checked ~ 
+        #y:checked ~ #o:checked ~ #u:checked ~ 
+        #b:checked ~ #e:checked ~ 
+        #m:checked ~ #y2:checked ~ 
+        #v:checked ~ #a:checked ~ #l3:checked ~ #e2:checked ~ #n:checked ~ #t:checked ~ #i2:checked ~ #n2:checked ~ #e3:checked ~
+        .grid .f {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        /* Show the final message when won */
+        .message {
+            margin-top: 30px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease 0.5s;
+            pointer-events: none;
+        }
+
+        #w:checked ~ #i:checked ~ #l1:checked ~ #l2:checked ~ 
+        #y:checked ~ #o:checked ~ #u:checked ~ 
+        #b:checked ~ #e:checked ~ 
+        #m:checked ~ #y2:checked ~ 
+        #v:checked ~ #a:checked ~ #l3:checked ~ #e2:checked ~ #n:checked ~ #t:checked ~ #i2:checked ~ #n2:checked ~ #e3:checked ~
+        .message {
+            opacity: 1;
+        }
+
+        .btn-group { margin-top: 15px; }
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1 style="color: #ff00ff; text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff; font-family: 'Courier New', monospace;">
-  LIZAYNIA
-</h1>
-    <h1>Hello, I'm Liza!</h1>
-    <p>Welcome to my first website. I'm building this as my future portfolio.</p>
+
+    <h2>A digital find...</h2>
+    <p class="instructions">Find the hidden message in the grid</p>
+
+    <input type="checkbox" id="w"> <input type="checkbox" id="i">
+    <input type="checkbox" id="l1"> <input type="checkbox" id="l2">
+    <input type="checkbox" id="y"> <input type="checkbox" id="o">
+    <input type="checkbox" id="u"> <input type="checkbox" id="b">
+    <input type="checkbox" id="e"> <input type="checkbox" id="m">
+    <input type="checkbox" id="y2"> <input type="checkbox" id="v">
+    <input type="checkbox" id="a"> <input type="checkbox" id="l3">
+    <input type="checkbox" id="e2"> <input type="checkbox" id="n">
+    <input type="checkbox" id="t"> <input type="checkbox" id="i2">
+    <input type="checkbox" id="n2"> <input type="checkbox" id="e3">
+
+    <div class="grid">
+        <label for="w">W</label><label for="i">I</label><label for="l1">L</label><label for="l2">L</label><span class="f">X</span><span class="f">Q</span><span class="f">P</span>
+        <span class="f">R</span><span class="f">T</span><label for="y">Y</label><label for="o">O</label><label for="u">U</label><span class="f">S</span><span class="f">D</span>
+        <span class="f">F</span><span class="f">G</span><span class="f">H</span><label for="b">B</label><label for="e">E</label><span class="f">J</span><span class="f">K</span>
+        <label for="m">M</label><label for="y2">Y</label><span class="f">L</span><span class="f">Z</span><span class="f">C</span><span class="f">V</span><span class="f">B</span>
+        <label for="v">V</label><label for="a">A</label><label for="l3">L</label><label for="e2">E</label><label for="n">N</label><label for="t">T</label><label for="i2">I</label>
+        <label for="n2">N</label><label for="e3">E</label><span class="f">M</span><span class="f">W</span><span class="f">R</span><span class="f">O</span><span class="f">Y</span>
+    </div>
+
+    <div class="message">
+        <h3>Will you be my Valentine?</h3>
+        <div class="btn-group">
+            <button onclick="alert('Yay! I love you!')">Yes</button>
+            <button onclick="alert('Error 404: Option not found. Try again!')">Yes (but in pink)</button>
+        </div>
+    </div>
+
 </body>
 </html>
