@@ -208,6 +208,80 @@
             opacity: 1;
             pointer-events: auto;
         }
+
+
+        @keyframes heart-blast {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            65% {
+                /* Active phase for approx 5s (of 8s total) */
+                transform: translate(calc(-50% + var(--x) * 0.85), calc(-50% + var(--y) * 0.85)) rotate(var(--r)) scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                /* Slow disappear phase */
+                transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(var(--r)) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 200;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background-color: var(--accent);
+            clip-path: path('M15 5.5 C15 5.5 10 0 5 0 C2.25 0 0 2.25 0 5 C0 10 15 25 15 25 C15 25 30 10 30 5 C30 2.25 27.75 0 25 0 C20 0 15 5.5 15 5.5 Z');
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+
+        .heart:nth-child(4n+1) {
+            background-color: #ff4d6d;
+        }
+
+        .heart:nth-child(4n+2) {
+            background-color: #e01e43;
+        }
+
+        .heart:nth-child(4n+3) {
+            background-color: #ffccd5;
+        }
+
+        .heart:nth-child(4n+0) {
+            background-color: #fff0f3;
+        }
+
+        body:has(#h1:checked):has(#h2:checked):has(#h3:checked):has(#h4:checked):has(#h5:checked):has(#v1:checked):has(#v2:checked):has(#v3:checked):has(#v4:checked):has(#v5:checked):has(#v6:checked):has(#v7:checked):has(#v8:checked):has(#v9:checked):has(#v10:checked):has(#d1:checked):has(#d2:checked):has(#d3:checked):has(#m1:checked):has(#m2:checked):has(#l1:checked):has(#l2:checked):has(#l3:checked):has(#l4:checked) .heart {
+            /* 
+               Grid Disappearance: 5s delay + 1s transition = 6s total.
+               We start the heart animation after 6s.
+               Duration: 8s.
+            */
+            animation: heart-blast 8s ease-out forwards;
+            animation-delay: calc(6s + var(--d));
+            /* Use newly added --d var or just inline style */
+        }
     </style>
 </head>
 
@@ -254,14 +328,33 @@
     </div>
 
     <div class="victory-container">
-        <div class="victory-word">HAPPY</div>
-        <div class="victory-word">VALENTINES</div>
-        <div class="victory-word">DAY,</div>
+        <div class="victory-word">Happy Valentines Day,</div>
         <div style="width: 100%"></div>
-        <div class="victory-word">MY</div>
-        <div class="victory-word">LOVE!</div>
+        <div class="victory-word">My Love!</div>
     </div>
 
+    <div class="hearts-container">
+        <div class="heart" style="--x: 10vw; --y: -40vh; --r: 10deg; --d: 0.1s;"></div>
+        <div class="heart" style="--x: -20vw; --y: -30vh; --r: -20deg; --d: 0.3s;"></div>
+        <div class="heart" style="--x: 30vw; --y: -20vh; --r: 45deg; --d: 0.5s;"></div>
+        <div class="heart" style="--x: -40vw; --y: 10vh; --r: -10deg; --d: 0.2s;"></div>
+        <div class="heart" style="--x: 15vw; --y: 35vh; --r: 60deg; --d: 0.6s;"></div>
+        <div class="heart" style="--x: -10vw; --y: 25vh; --r: -30deg; --d: 0.4s;"></div>
+        <div class="heart" style="--x: 40vw; --y: 5vh; --r: 15deg; --d: 0.7s;"></div>
+        <div class="heart" style="--x: -35vw; --y: -15vh; --r: -5deg; --d: 0.2s;"></div>
+        <div class="heart" style="--x: 5vw; --y: -45vh; --r: 25deg; --d: 0.5s;"></div>
+        <div class="heart" style="--x: -25vw; --y: 40vh; --r: -60deg; --d: 0.3s;"></div>
+        <div class="heart" style="--x: 25vw; --y: 15vh; --r: 80deg; --d: 0.6s;"></div>
+        <div class="heart" style="--x: -5vw; --y: -25vh; --r: -15deg; --d: 0.1s;"></div>
+        <div class="heart" style="--x: 45vw; --y: -10vh; --r: 30deg; --d: 0.8s;"></div>
+        <div class="heart" style="--x: -45vw; --y: 30vh; --r: -45deg; --d: 0.4s;"></div>
+        <div class="heart" style="--x: 20vw; --y: -35vh; --r: 50deg; --d: 0.5s;"></div>
+        <div class="heart" style="--x: -15vw; --y: -10vh; --r: -25deg; --d: 0.3s;"></div>
+        <div class="heart" style="--x: 35vw; --y: 30vh; --r: 10deg; --d: 0.7s;"></div>
+        <div class="heart" style="--x: -30vw; --y: 20vh; --r: -35deg; --d: 0.2s;"></div>
+        <div class="heart" style="--x: 0vw; --y: -50vh; --r: 0deg; --d: 0.6s;"></div>
+        <div class="heart" style="--x: 0vw; --y: 50vh; --r: 90deg; --d: 0.6s;"></div>
+    </div>
 </body>
 
 </html>
