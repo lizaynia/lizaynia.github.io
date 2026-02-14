@@ -1,149 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Little Hunt For You</title>
+    <title>A Digital Valentine</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;900&display=swap');
+
         :root {
-            --bg: #fff5f7;
-            --text: #4a4a4a;
+            --bg: #fff0f3;
+            --text: #593d45;
             --accent: #ff4d6d;
-            --filler: #d1d1d1;
+            --grid-bg: rgba(255, 255, 255, 0.9);
+            --word-found: #ff0040;
         }
 
         body {
             background-color: var(--bg);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Outfit', sans-serif;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        h2 { color: var(--text); margin-bottom: 10px; font-weight: 300; }
-        .instructions { font-size: 0.9rem; color: #888; margin-bottom: 20px; }
-
-        /* The Grid */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(7, 40px);
-            grid-gap: 10px;
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
-            position: relative;
-        }
-
-        /* Hide the actual checkboxes */
         input[type="checkbox"] {
             display: none;
         }
 
-        /* Letter Styling */
-        label, .f {
-            width: 40px;
-            height: 40px;
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 50px);
+            grid-gap: 10px;
+            background: var(--grid-bg);
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(255, 77, 109, 0.15);
+            position: relative;
+            /* Сетка исчезнет только через 5 секунд после победы */
+            transition: opacity 1s ease 5s, transform 1s ease 5s;
+            z-index: 5;
+        }
+
+        .grid span,
+        .grid label {
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            font-weight: 900;
+            font-size: 1.6rem;
+            border-radius: 50%;
             user-select: none;
+            transition: color 0.4s ease, transform 0.3s ease;
+            position: relative;
+            z-index: 2;
+            color: #ff99c8;
         }
 
-        /* The Filler Letters */
-        .f { color: var(--filler); cursor: default; }
+        .grid span:nth-child(3n+2),
+        .grid label:nth-child(3n+2) {
+            color: #a9def9;
+        }
 
-        /* When a correct letter is clicked */
-        input:checked + label {
-            background-color: var(--accent);
-            color: white;
+        .grid span:nth-child(3n+3),
+        .grid label:nth-child(3n+3) {
+            color: #ffbe0b;
+        }
+
+        input:checked+label {
             transform: scale(1.1);
         }
 
-        /* THE MAGIC LOGIC */
-        /* If all 18 specific letters are checked... */
-        #w:checked ~ #i:checked ~ #l1:checked ~ #l2:checked ~ 
-        #y:checked ~ #o:checked ~ #u:checked ~ 
-        #b:checked ~ #e:checked ~ 
-        #m:checked ~ #y2:checked ~ 
-        #v:checked ~ #a:checked ~ #l3:checked ~ #e2:checked ~ #n:checked ~ #t:checked ~ #i2:checked ~ #n2:checked ~ #e3:checked ~
-        .grid .f {
+        /* Обводки слов */
+        .word-highlight {
+            position: absolute;
+            border: 3px solid var(--word-found);
+            border-radius: 30px;
+            pointer-events: none;
             opacity: 0;
-            transform: scale(0);
+            z-index: 1;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: scale(0.8);
         }
 
-        /* Show the final message when won */
-        .message {
-            margin-top: 30px;
-            text-align: center;
+        .highlight-happy {
+            top: 40px;
+            left: 160px;
+            width: 290px;
+            height: 50px;
+        }
+
+        .highlight-valentines {
+            top: 40px;
+            left: 40px;
+            width: 50px;
+            height: 590px;
+        }
+
+        .highlight-day {
+            top: 345px;
+            left: 105px;
+            width: 215px;
+            height: 50px;
+            transform: rotate(45deg) scale(0.8);
+            transform-origin: 25px 25px;
+        }
+
+        .highlight-love {
+            top: 105px;
+            left: 405px;
+            width: 300px;
+            height: 50px;
+            transform: rotate(45deg) scale(0.8);
+            transform-origin: 25px 25px;
+        }
+
+        .highlight-my {
+            top: 520px;
+            left: 280px;
+            width: 110px;
+            height: 50px;
+        }
+
+        /* Логика активации (рамка + красный цвет) */
+        body:has(#h1:checked):has(#h2:checked):has(#h3:checked):has(#h4:checked):has(#h5:checked) .highlight-happy {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        body:has(#h1:checked):has(#h2:checked):has(#h3:checked):has(#h4:checked):has(#h5:checked) label[for^="h"] {
+            color: var(--word-found) !important;
+        }
+
+        body:has(#v1:checked):has(#v2:checked):has(#v3:checked):has(#v4:checked):has(#v5:checked):has(#v6:checked):has(#v7:checked):has(#v8:checked):has(#v9:checked):has(#v10:checked) .highlight-valentines {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        body:has(#v1:checked):has(#v2:checked):has(#v3:checked):has(#v4:checked):has(#v5:checked):has(#v6:checked):has(#v7:checked):has(#v8:checked):has(#v9:checked):has(#v10:checked) label[for^="v"] {
+            color: var(--word-found) !important;
+        }
+
+        body:has(#d1:checked):has(#d2:checked):has(#d3:checked) .highlight-day {
+            opacity: 1;
+            transform: rotate(45deg) scale(1);
+        }
+
+        body:has(#d1:checked):has(#d2:checked):has(#d3:checked) label[for^="d"] {
+            color: var(--word-found) !important;
+        }
+
+        body:has(#m1:checked):has(#m2:checked) .highlight-my {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        body:has(#m1:checked):has(#m2:checked) label[for^="m"] {
+            color: var(--word-found) !important;
+        }
+
+        body:has(#l1:checked):has(#l2:checked):has(#l3:checked):has(#l4:checked) .highlight-love {
+            opacity: 1;
+            transform: rotate(45deg) scale(1);
+        }
+
+        body:has(#l1:checked):has(#l2:checked):has(#l3:checked):has(#l4:checked) label[for^="l"] {
+            color: var(--word-found) !important;
+        }
+
+        /* Финальное сообщение */
+        .victory-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            width: 90%;
             opacity: 0;
-            transition: opacity 1s ease 0.5s;
+            pointer-events: none;
+            z-index: 100;
+            /* Появится через 6.5 секунд (5с задержка сетки + время на исчезновение) */
+            transition: opacity 1.5s ease 6.5s;
+        }
+
+        .victory-word {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--word-found);
+        }
+
+        /* Условие победы (все слова найдены) */
+        body:has(#h1:checked):has(#h2:checked):has(#h3:checked):has(#h4:checked):has(#h5:checked):has(#v1:checked):has(#v2:checked):has(#v3:checked):has(#v4:checked):has(#v5:checked):has(#v6:checked):has(#v7:checked):has(#v8:checked):has(#v9:checked):has(#v10:checked):has(#d1:checked):has(#d2:checked):has(#d3:checked):has(#m1:checked):has(#m2:checked):has(#l1:checked):has(#l2:checked):has(#l3:checked):has(#l4:checked) .grid {
+            opacity: 0;
+            transform: scale(0.9);
             pointer-events: none;
         }
 
-        #w:checked ~ #i:checked ~ #l1:checked ~ #l2:checked ~ 
-        #y:checked ~ #o:checked ~ #u:checked ~ 
-        #b:checked ~ #e:checked ~ 
-        #m:checked ~ #y2:checked ~ 
-        #v:checked ~ #a:checked ~ #l3:checked ~ #e2:checked ~ #n:checked ~ #t:checked ~ #i2:checked ~ #n2:checked ~ #e3:checked ~
-        .message {
+        body:has(#h1:checked):has(#h2:checked):has(#h3:checked):has(#h4:checked):has(#h5:checked):has(#v1:checked):has(#v2:checked):has(#v3:checked):has(#v4:checked):has(#v5:checked):has(#v6:checked):has(#v7:checked):has(#v8:checked):has(#v9:checked):has(#v10:checked):has(#d1:checked):has(#d2:checked):has(#d3:checked):has(#m1:checked):has(#m2:checked):has(#l1:checked):has(#l2:checked):has(#l3:checked):has(#l4:checked) .victory-container {
             opacity: 1;
-        }
-
-        .btn-group { margin-top: 15px; }
-        button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin: 0 10px;
+            pointer-events: auto;
         }
     </style>
 </head>
+
 <body>
 
-    <h2>A digital find...</h2>
-    <p class="instructions">Find the hidden message in the grid</p>
-
-    <input type="checkbox" id="w"> <input type="checkbox" id="i">
-    <input type="checkbox" id="l1"> <input type="checkbox" id="l2">
-    <input type="checkbox" id="y"> <input type="checkbox" id="o">
-    <input type="checkbox" id="u"> <input type="checkbox" id="b">
-    <input type="checkbox" id="e"> <input type="checkbox" id="m">
-    <input type="checkbox" id="y2"> <input type="checkbox" id="v">
-    <input type="checkbox" id="a"> <input type="checkbox" id="l3">
-    <input type="checkbox" id="e2"> <input type="checkbox" id="n">
-    <input type="checkbox" id="t"> <input type="checkbox" id="i2">
-    <input type="checkbox" id="n2"> <input type="checkbox" id="e3">
+    <input type="checkbox" id="h1"><input type="checkbox" id="h2"><input type="checkbox" id="h3"><input type="checkbox"
+        id="h4"><input type="checkbox" id="h5">
+    <input type="checkbox" id="v1"><input type="checkbox" id="v2"><input type="checkbox" id="v3"><input type="checkbox"
+        id="v4"><input type="checkbox" id="v5"><input type="checkbox" id="v6"><input type="checkbox" id="v7"><input
+        type="checkbox" id="v8"><input type="checkbox" id="v9"><input type="checkbox" id="v10">
+    <input type="checkbox" id="d1"><input type="checkbox" id="d2"><input type="checkbox" id="d3">
+    <input type="checkbox" id="m1"><input type="checkbox" id="m2">
+    <input type="checkbox" id="l1"><input type="checkbox" id="l2"><input type="checkbox" id="l3"><input type="checkbox"
+        id="l4">
 
     <div class="grid">
-        <label for="w">W</label><label for="i">I</label><label for="l1">L</label><label for="l2">L</label><span class="f">X</span><span class="f">Q</span><span class="f">P</span>
-        <span class="f">R</span><span class="f">T</span><label for="y">Y</label><label for="o">O</label><label for="u">U</label><span class="f">S</span><span class="f">D</span>
-        <span class="f">F</span><span class="f">G</span><span class="f">H</span><label for="b">B</label><label for="e">E</label><span class="f">J</span><span class="f">K</span>
-        <label for="m">M</label><label for="y2">Y</label><span class="f">L</span><span class="f">Z</span><span class="f">C</span><span class="f">V</span><span class="f">B</span>
-        <label for="v">V</label><label for="a">A</label><label for="l3">L</label><label for="e2">E</label><label for="n">N</label><label for="t">T</label><label for="i2">I</label>
-        <label for="n2">N</label><label for="e3">E</label><span class="f">M</span><span class="f">W</span><span class="f">R</span><span class="f">O</span><span class="f">Y</span>
+        <div class="word-highlight highlight-happy"></div>
+        <div class="word-highlight highlight-valentines"></div>
+        <div class="word-highlight highlight-day"></div>
+        <div class="word-highlight highlight-my"></div>
+        <div class="word-highlight highlight-love"></div>
+
+        <label for="v1">V</label> <span>Q</span> <label for="h1">H</label> <label for="h2">A</label> <label
+            for="h3">P</label> <label for="h4">P</label> <label for="h5">Y</label> <span>X</span> <span>O</span>
+        <span>L</span>
+        <label for="v2">A</label> <span>Z</span> <span>W</span> <span>K</span> <span>M</span> <span>J</span> <label
+            for="l1">L</label> <span>U</span> <span>Y</span> <span>T</span>
+        <label for="v3">L</label> <span>E</span> <span>R</span> <span>B</span> <span>I</span> <span>N</span>
+        <span>G</span> <label for="l2">O</label> <span>S</span> <span>A</span>
+        <label for="v4">E</label> <span>X</span> <span>P</span> <span>D</span> <span>T</span> <span>H</span>
+        <span>C</span> <span>Q</span> <label for="l3">V</label> <span>F</span>
+        <label for="v5">N</label> <span>O</span> <span>M</span> <span>U</span> <span>S</span> <span>A</span>
+        <span>W</span> <span>K</span> <span>R</span> <label for="l4">E</label>
+        <label for="v6">T</label> <label for="d1">D</label> <span>G</span> <span>Y</span> <span>J</span> <span>N</span>
+        <span>B</span> <span>V</span> <span>C</span> <span>X</span>
+        <label for="v7">I</label> <span>Z</span> <label for="d2">A</label> <span>Q</span> <span>L</span> <span>P</span>
+        <span>O</span> <span>I</span> <span>U</span> <span>Y</span>
+        <label for="v8">N</label> <span>T</span> <span>R</span> <label for="d3">Y</label> <span>E</span> <span>W</span>
+        <span>Q</span> <span>A</span> <span>S</span> <span>D</span>
+        <label for="v9">E</label> <span>F</span> <span>G</span> <span>H</span> <label for="m1">M</label> <label
+            for="m2">Y</label> <span>J</span> <span>K</span> <span>L</span> <span>Z</span>
+        <label for="v10">S</label> <span>X</span> <span>C</span> <span>V</span> <span>B</span> <span>N</span>
+        <span>M</span> <span>Q</span> <span>W</span> <span>E</span>
     </div>
 
-    <div class="message">
-        <h3>Will you be my Valentine?</h3>
-        <div class="btn-group">
-            <button onclick="alert('Yay! I love you!')">Yes</button>
-            <button onclick="alert('Error 404: Option not found. Try again!')">Yes (but in pink)</button>
-        </div>
+    <div class="victory-container">
+        <div class="victory-word">HAPPY</div>
+        <div class="victory-word">VALENTINES</div>
+        <div class="victory-word">DAY,</div>
+        <div style="width: 100%"></div>
+        <div class="victory-word">MY</div>
+        <div class="victory-word">LOVE!</div>
     </div>
 
 </body>
+
 </html>
